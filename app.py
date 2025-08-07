@@ -23,11 +23,6 @@ if not GOOGLE_CLIENT_ID or not GOOGLE_CLIENT_SECRET:
     raise ValueError("ስህተት: GOOGLE_OAUTH_CLIENT_ID ወይም SECRET በ .env ፋይል ውስጥ አልተገኙም።")
 if not GEMINI_API_KEY:
     raise ValueError("ስህተት: GEMINI_API_KEY በ .env ፋይል ውስጥ አልተገኘም።")
-# ----------------------------------------------------
-
-# HTTP ላይ እንዲሰራ (ለሙከራ ብቻ)
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-
 # --- Flask አፕሊኬሽን እና ማዋቀር ---
 app = Flask(__name__)
 app.secret_key = FLASK_SECRET_KEY # አሁን በቀጥታ ከተለዋዋጩ እንወስዳለን
