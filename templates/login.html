@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <title>ወደ አዲስ እይታ ይግቡ</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #0d324d, #7f5a83); font-family: 'Abyssinica SIL', sans-serif; color: #333; }
+        .login-box { text-align: center; background: white; padding: 50px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        h1 { font-size: 2em; margin-bottom: 10px; }
+        p { margin-bottom: 30px; }
+        .login-btn { display: inline-flex; align-items: center; gap: 10px; background: #4285F4; color: white; padding: 12px 24px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 1.1em; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h1>እንኳን ወደ አዲስ እይታ AI በደህና መጡ</h1>
+        <p>ለመቀጠል እባክዎ በ Google አካውንትዎ ይግቡ።</p>
+        <a href="{{ url_for('google.login') }}" class="login-btn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="24" height="24" alt="Google logo">
+            <span>በ Google ይግቡ</span>
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>አዲስ እይታ - የፖለቲካ AI ረዳት</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Abyssinica SIL', 'Nyala', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0d324d, #7f5a83, #0d324d);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        /* --- START: UPDATED HEADER CSS --- */
+        header {
+            background: linear-gradient(to right, #004AAD, #008751);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content {
+            text-align: left;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            text-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+
+        .user-info {
+            text-align: right;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logout-btn {
+            background-color: #E40521; /* Ethiopian Red */
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0041c;
+        }
+        /* --- END: UPDATED HEADER CSS --- */
+        
+        .main-content {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .chat-container {
+            flex: 2;
+            min-width: 350px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 65vh;
+        }
+        
+        .chat-header {
+            background: #495057;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .chat-header i { font-size: 1.5rem; }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            line-height: 1.7;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .ai-message { background: #f1f3f5; align-self: flex-start; border-bottom-left-radius: 3px; }
+        .user-message { background: #004AAD; color: white; align-self: flex-end; border-bottom-right-radius: 3px; }
+        
+        .chat-input { display: flex; padding: 15px; background: #fff; border-top: 1px solid #e9ecef; }
+        .chat-input input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #ced4da;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .chat-input input:focus { border-color: #004AAD; box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.1); }
+        .chat-input button {
+            background: #004AAD;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 25px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        .chat-input button:hover { background: #008751; transform: scale(1.05); }
+        
+        .info-panel {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+        }
+        
+        .info-panel h2 {
+            color: #004AAD;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #F7D117;
+        }
+        
+        .capabilities { display: flex; flex-direction: column; gap: 15px; }
+        .capability { display: flex; gap: 15px; align-items: center; padding: 15px; background: rgba(0, 74, 173, 0.05); border-radius: 10px; transition: all 0.3s; }
+        .capability:hover { background: rgba(0, 135, 81, 0.1); transform: translateX(5px); }
+        .capability i { color: #004AAD; font-size: 1.8rem; min-width: 35px; }
+        .capability h3 { color: #004AAD; margin-bottom: 5px; }
+        .capability p { color: #555; font-size: 0.95rem; }
+        
+        .loading { display: flex; align-items: center; gap: 5px; padding: 10px; }
+        .loading p { font-style: italic; color: #555; }
+        .loading span {
+            width: 8px; height: 8px; border-radius: 50%; background: #004AAD;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        .loading span:nth-child(2) { animation-delay: 0.2s; }
+        .loading span:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        .disclaimer { text-align: center; color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; padding: 10px; margin-top: 10px; }
+        
+        @media (max-width: 768px) {
+            header { flex-direction: column; gap: 10px; }
+            .main-content { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1><i class="fas fa-landmark"></i> አዲስ እይታ</h1>
+                <p>ስለ ኢትዮጵያ ፖለቲካ እና ታሪክ ጥልቅ ትንታኔ የሚሰጥ የእርስዎ AI ረዳት</p>
+            </div>
+            <div class="user-info">
+                <span>እንኳን ደህና መጣህ/ሽ፣ <strong>{{ user_name.split()[0] }}</strong>!</span>
+                <a href="/logout" class="logout-btn">ውጣ</a>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <i class="fas fa-robot"></i>
+                    <h2>የትንታኔ ረዳት</h2>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message ai-message">
+                        <p>ሰላም <strong>{{ user_name.split()[0] }}</strong>! እኔ 'አዲስ እይታ' ነኝ። ስለ ኢትዮጵያ ፖሊሲዎች፣ ታሪካዊ ክስተቶች፣ እና ወቅታዊ ጉዳዮች ጥልቅ ትንታኔ ልሰጥዎ ዝግጁ ነኝ።</p>
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="user-input" placeholder="ጥያቄዎን እዚህ ያስገቡ...">
+                    <button id="send-btn"><i class="fas fa-paper-plane"></i> ላክ</button>
+                </div>
+            </div>
+            
+            <div class="info-panel">
+                <h2>የ AI ችሎታዎች</h2>
+                <div class="capabilities">
+                    <div class="capability"><i class="fas fa-scroll"></i><div><h3>የፖሊሲ ትንታኔ</h3><p>የህጎች እና ደንቦች ሊያስከትሉ ስለሚችሉት ተጽዕኖ ዝርዝር ማብራሪያ</p></div></div>
+                    <div class="capability"><i class="fas fa-balance-scale"></i><div><h3>የአቋም ንጽጽር</h3><p>በተለያዩ የፖለቲካ ሀይሎች መካከል ያሉ የአቋም ልዩነቶች</p></div></div>
+                    <div class="capability"><i class="fas fa-newspaper"></i><div><h3>የዜና ትንታኔ</h3><p>ወቅታዊ ክስተቶች ከበስተጀርባቸው ካለው ታሪክ ጋር ተገናዝበው</p></div></div>
+                    <div class="capability"><i class="fas fa-landmark-flag"></i><div><h3>የታሪክ አውድ</h3><p>የዛሬዎቹ ጉዳዮች ከትናንትናው ታሪክ ጋር ያላቸውን ግንኙነት መፈተሽ</p></div></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="disclaimer">
+            ማሳሰቢያ: ይህ AI የሚሰጠው መልስ ለመረጃ አገልግሎት ብቻ ነው። የባለሙያ ምክርን አይተካም።
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.getElementById('chat-messages');
+            const userInput = document.getElementById('user-input');
+            const sendBtn = document.getElementById('send-btn');
+            
+            const converter = new showdown.Converter();
+            
+            function scrollToBottom() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            function addMessage(message, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = isUser ? 'message user-message' : 'message ai-message';
+                
+                if (!isUser) {
+                    let htmlMessage = converter.makeHtml(message);
+                    messageDiv.innerHTML = htmlMessage;
+                } else {
+                    messageDiv.innerHTML = `<p>${message}</p>`;
+                }
+                
+                chatMessages.appendChild(messageDiv);
+                scrollToBottom();
+            }
+            
+            function showLoading() {
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'message ai-message';
+                loadingDiv.id = 'loading-indicator';
+                loadingDiv.innerHTML = `
+                    <div class="loading">
+                        <p>ትንታኔ በመዘጋጀት ላይ ነው...</p>
+                        <span></span><span></span><span></span>
+                    </div>
+                `;
+                chatMessages.appendChild(loadingDiv);
+                scrollToBottom();
+            }
+            
+            function hideLoading() {
+                const loading = document.getElementById('loading-indicator');
+                if (loading) loading.remove();
+            }
+            
+            function handleSend() {
+                const message = userInput.value.trim();
+                if (message) {
+                    addMessage(message, true);
+                    userInput.value = '';
+                    showLoading();
+
+                    $.ajax({
+                        url: '/ask',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ 'question': message }),
+                        success: function(response) {
+                            hideLoading();
+                            addMessage(response.answer, false);
+                        },
+                        error: function() {
+                            hideLoading();
+                            addMessage("ይቅርታ፣ ከ AI ሰርቨር ጋር መገናኘት አልተቻለም።", false);
+                        }
+                    });
+                }
+            }
+            
+            sendBtn.addEventListener('click', handleSend);
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleSend();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
