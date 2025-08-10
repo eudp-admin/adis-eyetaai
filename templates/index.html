@@ -269,6 +269,10 @@
             const sendBtn = document.getElementById('send-btn');
             
             const converter = new showdown.Converter();
+
+            // ★★★ ተስተካክሏል ★★★
+            // የውይይት ታሪክን ለማከማቸት variable እንፈጥራለን (በ browser ውስጥ ይቀመጣል)
+            let chatHistory = [];
             
             function scrollToBottom() {
                 chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -279,6 +283,7 @@
                 messageDiv.className = isUser ? 'message user-message' : 'message ai-message';
                 
                 if (!isUser) {
+                    // መልሱ Markdown ስለሆነ ወደ HTML እንቀይረዋለን
                     let htmlMessage = converter.makeHtml(message);
                     messageDiv.innerHTML = htmlMessage;
                 } else {
@@ -315,18 +320,28 @@
                     userInput.value = '';
                     showLoading();
 
+                    // ★★★ ተስተካክሏል ★★★
+                    // ጥያቄውን እና አሁን ያለውን ታሪክ አብረን እንልካለን
                     $.ajax({
                         url: '/ask',
                         method: 'POST',
                         contentType: 'application/json',
-                        data: JSON.stringify({ 'question': message }),
+                        data: JSON.stringify({ 
+                            'question': message,
+                            'history': chatHistory  // ታሪክን እንጨምራለን
+                        }),
                         success: function(response) {
                             hideLoading();
                             addMessage(response.answer, false);
+                            
+                            // ★★★ ተስተካክሏል ★★★
+                            // ከሰርቨር የተመለሰውን አዲስ ታሪክ እናስቀምጣለን
+                            chatHistory = response.new_history;
                         },
-                        error: function() {
+                        error: function(xhr, status, error) {
                             hideLoading();
-                            addMessage("ይቅርታ፣ ከ AI ሰርቨር ጋር መገናኘት አልተቻለም።", false);
+                            console.error("AJAX Error:", status, error);
+                            addMessage("ይቅርታ፣ ከ AI ሰርቨር ጋር መገናኘት አልተቻለም። እባክዎ እንደገና ይሞክሩ።", false);
                         }
                     });
                 }
