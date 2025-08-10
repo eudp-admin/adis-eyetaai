@@ -29,7 +29,7 @@ if IS_PRODUCTION:
     redirect_uri = "https://adis-eyetaai.onrender.com/login/google/authorized"
 else:
     # በኮምፒውተራችን ላይ ስንሆን፣ HTTP ላይ እንዲሰራ እንፈቅዳለን
-    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+    # os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     redirect_uri = "http://127.0.0.1:5001/login/google/authorized"
 # ----------------------------------------------------
 
