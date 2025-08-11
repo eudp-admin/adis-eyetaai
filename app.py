@@ -30,7 +30,7 @@ app.secret_key = FLASK_SECRET_KEY
 try:
     genai.configure(api_key=GEMINI_API_KEY)
     safety_settings = { HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE }
-    model = genai.GenerativeModel('gemini-1.5-pro', safety_settings=safety_settings)
+    model = genai.GenerativeModel('gemini-2.5-pro', safety_settings=safety_settings)
 except Exception as e:
     print(f"የ Gemini ሞዴል ዝግጅት ላይ ስህተት አለ: {e}")
 
